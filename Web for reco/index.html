@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crop and fertilizer Recommender</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('image_(6)[1].jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .main-container {
+            max-width: 700px;
+            margin: auto;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-container {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tab-container button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+            width: 50%;
+        }
+
+        .tab-container button:hover {
+            background-color: #ddd;
+        }
+
+        .tab-container button.active {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .form-content {
+            display: none;
+            padding: 20px;
+            background: transparent;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            grid-column: span 2;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        .result {
+            background: #e2e3e5;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>Crop and Fertilizer Recommendation System</h1>
+        <div class="tab-container">
+            <button class="tab-link active" onclick="openForm(event, 'CropForm')">🌱 Crop Recommendation</button>
+            <button class="tab-link" onclick="openForm(event, 'FertilizerForm')">💊 Fertilizer Recommendation</button>
+        </div>
+        <div id="CropForm" class="form-content" style="display: block;">
+            <form id="cropRecommendationForm">
+                <label for="N_crop">Nitrogen (N):</label>
+                <input type="number" id="N_crop" required>
+                <label for="P_crop">Phosphorus (P):</label>
+                <input type="number" id="P_crop" required>
+                <label for="K_crop">Potassium (K):</label>
+                <input type="number" id="K_crop" required>
+                <label for="temperature_crop">Temperature (°C):</label>
+                <input type="number" step="0.1" id="temperature_crop" required>
+                <label for="humidity_crop">Humidity (%):</label>
+                <input type="number" step="0.1" id="humidity_crop" required>
+                <label for="ph_crop">Soil pH:</label>
+                <input type="number" step="0.1" id="ph_crop" required>
+                <label for="rainfall_crop">Rainfall (mm):</label>
+                <input type="number" step="0.1" id="rainfall_crop" required>
+                <button type="submit" class="submit-btn">Recommend Crop</button>
+            </form>
+            <div class="result">
+                <h2>Recommended Crop: <span id="crop_result" style="color: green;"></span></h2>
+            </div>
+        </div>
+        <div id="FertilizerForm" class="form-content">
+            <form id="fertilizerRecommendationForm">
+                <label for="temperature_fert">Temperature (°C):</label>
+                <input type="number" step="0.1" id="temperature_fert" required>
+                <label for="humidity_fert">Humidity (%):</label>
+                <input type="number" step="0.1" id="humidity_fert" required>
+                <label for="moisture_fert">Moisture:</label>
+                <input type="number" id="moisture_fert" required>
+                <label for="N_fert">Nitrogen (N):</label>
+                <input type="number" id="N_fert" required>
+                <label for="P_fert">Phosphorus (P):</label>
+                <input type="number" id="P_fert" required>
+                <label for="K_fert">Potassium (K):</label>
+                <input type="number" id="K_fert" required>
+                <label for="soil_type_fert">Soil Type:</label>
+                <select id="soil_type_fert" required>
+                    <option value="Clayey">Clayey</option>
+                    <option value="Loamy">Loamy</option>
+                    <option value="Black">Black</option>
+                    <option value="Red">Red</option>
+                    <option value="Sandy">Sandy</option>
+                </select>
+                <label for="crop_type_fert">Crop Type:</label>
+                <select id="crop_type_fert" required>
+                    <option value="Barley">Barley</option>
+                    <option value="Cotton">Cotton</option>
+                    <option value="Ground Nuts">Ground Nuts</option>
+                    <option value="Maize">Maize</option>
+                    <option value="Millets">Millets</option>
+                    <option value="Oil seeds">Oil seeds</option>
+                    <option value="Paddy">Paddy</option>
+                    <option value="Pulses">Pulses</option>
+                    <option value="Sugarcane">Sugarcane</option>
+                    <option value="Tobacco">Tobacco</option>
+                    <option value="Wheat">Wheat</option>
+                </select>
+                <button type="submit" class="submit-btn">Recommend Fertilizer</button>
+            </form>
+            <div class="result">
+                <h2>Recommended Fertilizer: <span id="fert_result" style="color: blue;"></span></h2>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openForm(evt, formName) {
+            var i, formContent, tabLinks;
+            formContent = document.getElementsByClassName("form-content");
+            for (i = 0; i < formContent.length; i++) {
+                formContent[i].style.display = "none";
+            }
+            tabLinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+            }
+            document.getElementById(formName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        document.getElementById('cropRecommendationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const data = {
+                N: document.getElementById('N_crop').value,
+                P: document.getElementById('P_crop').value,
+                K: document.getElementById('K_crop').value,
+                temperature: document.getElementById('temperature_crop').value,
+                humidity: document.getElementById('humidity_crop').value,
+                ph: document.getElementById('ph_crop').value,
+                rainfall: document.getElementById('rainfall_crop').value
+            };
+            /* ▼▼▼ URL CORRECTED FOR LOCAL USE ▼▼▼ */
+            fetch('/predict_crop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('crop_result').textContent = data.crop_recommendation;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+        document.getElementById('fertilizerRecommendationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const data = {
+                temperature_fert: document.getElementById('temperature_fert').value,
+                humidity_fert: document.getElementById('humidity_fert').value,
+                moisture_fert: document.getElementById('moisture_fert').value,
+                N_fert: document.getElementById('N_fert').value,
+                P_fert: document.getElementById('P_fert').value,
+                K_fert: document.getElementById('K_fert').value,
+                soil_type_fert: document.getElementById('soil_type_fert').value,
+                crop_type_fert: document.getElementById('crop_type_fert').value
+            };
+            /* ▼▼▼ URL CORRECTED FOR LOCAL USE ▼▼▼ */
+            fetch('/predict_fertilizer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('fert_result').textContent = data.fertilizer_recommendation;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>
